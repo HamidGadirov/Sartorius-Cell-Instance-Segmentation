@@ -34,9 +34,10 @@ def fix_all_seeds(seed):
 
 fix_all_seeds(2021)
 
-TRAIN_CSV = "../input/sartorius-cell-instance-segmentation/train.csv"
-TRAIN_PATH = "../input/sartorius-cell-instance-segmentation/train"
-TEST_PATH = "../input/sartorius-cell-instance-segmentation/test"
+# "../input/sartorius-cell-instance-segmentation/train"
+TRAIN_CSV = "data/train.csv"
+TRAIN_PATH = "data/train"
+TEST_PATH = "data/test"
 
 WIDTH = 704
 HEIGHT = 520
@@ -44,8 +45,7 @@ HEIGHT = 520
 # Reduced the train dataset to 5000 rows
 TEST = False
 
-DEVICE = torch.device(
-    'cuda') if torch.cuda.is_available() else torch.device('cpu')
+DEVICE = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 RESNET_MEAN = (0.485, 0.456, 0.406)
 RESNET_STD = (0.229, 0.224, 0.225)
@@ -347,6 +347,9 @@ for epoch in range(1, NUM_EPOCHS + 1):
 
         loss_dict = model(images, targets)
         loss = sum(loss for loss in loss_dict.values())
+
+        # TODO: try adding the loss similar to style (feature correlation) loss,
+        # based on Gramm matrix from Image Style Transfer Using CNNs
 
         # Backprop
         optimizer.zero_grad()
